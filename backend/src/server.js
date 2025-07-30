@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
-import { clerkMiddleware, requireAuth } from '@clerk/express';
+import { clerkMiddleware, requireAuth } from "@clerk/express";
 import connectCloudinary from "./configs/cloudinary.config.js";
 import aiRouter from "./routes/ai.route.js";
 import userRouter from "./routes/user.route.js";
@@ -16,10 +16,23 @@ const app = express();
 // Import and configure Cloudinary
 connectCloudinary();
 
-// Middlewares 
+// Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173" }));
+const corsOptions = {
+  origin:
+    process.env.NODE_ENV === "production"
+      ? [
+          "https://quick-ai-client-xi.vercel.app",
+          "https://your-custom-domain.com",
+        ]
+      : ["http://localhost:5173", "http://localhost:3000"],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
 app.use(morgan("dev"));
 // Clerk middleware for authentication
 app.use(clerkMiddleware());
@@ -30,8 +43,8 @@ app.get("/", (req, res) => {
 });
 
 // Use the aiRouter for the '/api/ai' route (removed requireAuth from here since it's in routes)
-app.use('/api/ai', requireAuth(), aiRouter);
-app.use('/api/user', requireAuth(), userRouter);
+app.use("/api/ai", requireAuth(), aiRouter);
+app.use("/api/user", requireAuth(), userRouter);
 
 // Start the server and listen on the specified port
 app.listen(PORT, () => {
