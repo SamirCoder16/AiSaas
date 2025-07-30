@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import "tailwindcss";
+*{
+    font-family: "Outfit", sans-serif;
+}
+@theme{
+    --color-primary: #5044E5;
+}
+.reset-tw, .reset-tw * {
+    all: revert !important;
+}
+.cl-drawerRoot{
+    z-index: 10;
+}
+
+@keyframes flipY {
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+.animate-flip {
+  animation: flipY 1s ease-in-out;
+}
