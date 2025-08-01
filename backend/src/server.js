@@ -6,12 +6,16 @@ import { clerkMiddleware, requireAuth } from '@clerk/express';
 import connectCloudinary from "./configs/cloudinary.config.js";
 import aiRouter from "./routes/ai.route.js";
 import userRouter from "./routes/user.route.js";
+import cron from './configs/cron.js';
 
 // Set the port number from environment variable or default to 3000
 const PORT = process.env.PORT || 3000;
 
 // Create an Express application instance
 const app = express();
+
+// Start the cron job if in production environment
+if(process.env.NODE_ENV === 'production') job.start();
 
 // Import and configure Cloudinary
 connectCloudinary();
